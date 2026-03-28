@@ -1,0 +1,41 @@
+{
+  "name": "@runebase/snap",
+  "version": "0.1.0",
+  "description": "MetaMask Snap for the Runebase blockchain",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runebase/runebase-metamask-snap.git"
+  },
+  "license": "MIT",
+  "main": "dist/bundle.js",
+  "files": [
+    "dist/",
+    "snap.manifest.json",
+    "images/"
+  ],
+  "scripts": {
+    "build": "mm-snap build",
+    "build:clean": "rm -rf dist && yarn build",
+    "start": "mm-snap watch",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@metamask/snaps-sdk": "^6.0.0",
+    "bitcoinjs-lib": "^6.1.5",
+    "bs58check": "^3.0.1",
+    "coinselect": "^3.1.13",
+    "ecpair": "^2.1.0",
+    "tiny-secp256k1": "^2.2.3"
+  },
+  "devDependencies": {
+    "@metamask/snaps-cli": "^6.0.0",
+    "@metamask/snaps-jest": "^8.0.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.0"
+  }
+}

@@ -4,14 +4,18 @@
  * DApp-facing connector library for the Runebase MetaMask Snap.
  * Provides a high-level API that DApps can use to interact with the snap.
  *
+ * Runebase addresses start with 'R' on mainnet.
+ * Token standard is RRC20 (Runebase equivalent of ERC20).
+ * Block time is ~32 seconds (PoS, optimised Runebase core).
+ *
  * Usage:
  *   import { RunebaseSnap } from '@runebase/connector';
  *
  *   const snap = new RunebaseSnap(window.ethereum);
  *   await snap.install();
  *
- *   const address = await snap.getAddress();
- *   const balance = await snap.getBalance();
+ *   const address = await snap.getAddress(); // returns 'Rxxxx...'
+ *   const balance = await snap.getBalance(); // satoshi
  *   const txid = await snap.sendTransaction({ to: 'Rxxxxx', amount: 1e8 });
  */
 
@@ -29,7 +33,8 @@ export interface SendTransactionParams {
   feeRate?: number;
 }
 
-export interface QRC20SendParams {
+/** RRC20 is the Runebase token standard (equivalent of ERC20 on Ethereum) */
+export interface RRC20SendParams {
   contractAddress: string;
   to: string;
   amount: string;
@@ -90,6 +95,7 @@ export class RunebaseSnap {
 
   /**
    * Get the derived Runebase address for the connected wallet.
+   * On mainnet, addresses start with 'R'.
    */
   async getAddress(): Promise<string> {
     const result = await this.invoke<{ address: string }>('runebase_getAddress');
@@ -114,21 +120,22 @@ export class RunebaseSnap {
   }
 
   /**
-   * Get QRC20 token balance for a contract.
+   * Get RRC20 token balance for a contract.
+   * RRC20 is the Runebase token standard (equivalent of ERC20).
    */
-  async getQRC20Balance(contractAddress: string): Promise<string> {
-    const result = await this.invoke<{ balance: string }>('runebase_getQRC20Balance', {
+  async getRRC20Balance(contractAddress: string): Promise<string> {
+    const result = await this.invoke<{ balance: string }>('runebase_getRRC20Balance', {
       contractAddress,
     });
     return result.balance;
   }
 
   /**
-   * Transfer QRC20 tokens.
+   * Transfer RRC20 tokens.
    * Shows a confirmation dialog to the user before signing.
    */
-  async sendQRC20(params: QRC20SendParams): Promise<string> {
-    const result = await this.invoke<{ txid: string }>('runebase_sendQRC20', params);
+  async sendRRC20(params: RRC20SendParams): Promise<string> {
+    const result = await this.invoke<{ txid: string }>('runebase_sendRRC20', params);
     return result.txid;
   }
 

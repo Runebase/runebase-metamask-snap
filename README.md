@@ -1,6 +1,6 @@
 # runebase-metamask-snap
 
-> **MetaMask Snap for the Runebase blockchain** — connect MetaMask to RUNES, QRC20 tokens, and EVM-compatible smart contracts natively.
+> **MetaMask Snap for the Runebase blockchain** — connect MetaMask to RUNES, RRC20 tokens, and EVM-compatible smart contracts natively.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![MetaMask Snaps](https://img.shields.io/badge/MetaMask-Snap-orange)](https://metamask.io/snaps/)
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This MetaMask Snap allows users to interact with the **Runebase blockchain** directly through their MetaMask wallet — without needing a separate wallet application. Runebase is a UTXO-based blockchain with full EVM support (via its Account Abstraction Layer), Proof-of-Stake consensus, and native QRC20 token support.
+This MetaMask Snap allows users to interact with the **Runebase blockchain** directly through their MetaMask wallet — without needing a separate wallet application. Runebase is a UTXO-based blockchain with full EVM support (via its Account Abstraction Layer), Proof-of-Stake consensus, and native RRC20 token support.
 
 The snap acts as an RPC proxy: it derives Runebase-compatible keypairs from the MetaMask secret recovery phrase, signs UTXO transactions locally, and communicates with the Runebase network via the Runebase Insight API.
 
@@ -19,7 +19,7 @@ The snap acts as an RPC proxy: it derives Runebase-compatible keypairs from the 
 
 - BIP44 HD key derivation from MetaMask SRP (coin type 2301)
 - RUNES balance and transfer (native coin)
-- QRC20 token support (balance queries and transfers)
+- RRC20 token support (balance queries and transfers)
 - Smart contract interaction (call and send-to-contract)
 - UTXO transaction building and local signing
 - Mainnet and Testnet network support
@@ -44,11 +44,12 @@ packages/
 | Parameter         | Value                                       |
 |-------------------|---------------------------------------------|
 | BIP44 coin type   | 2301 (RUNES)                                |
-| Address prefix    | Q (P2PKH, Base58Check version 58)           |
+| Address prefix    | R (P2PKH, Base58Check version 58)           |
 | Testnet prefix    | q (version 120)                             |
-| Block time        | ~128 seconds (PoS)                          |
+| Block time        | ~32 seconds (PoS, optimised core)           |
 | Native token      | RUNES (8 decimal places)                    |
 | EVM chain ID      | 1129 (mainnet) / 8888 (testnet)             |
+| Token standard    | RRC20 (Runebase equivalent of ERC20)        |
 | Insight API       | https://explorer.runebase.org/              |
 
 ---
@@ -108,8 +109,8 @@ yarn lint:fix
 | runebase_getAddress           | Get the derived Runebase address                 |
 | runebase_getBalance           | Get RUNES balance (satoshi)                      |
 | runebase_sendTransaction      | Sign and broadcast a RUNES transfer              |
-| runebase_getQRC20Balance      | Get QRC20 token balance                          |
-| runebase_sendQRC20            | Transfer QRC20 tokens                            |
+| runebase_getRRC20Balance      | Get RRC20 token balance                          |
+| runebase_sendRRC20            | Transfer RRC20 tokens                            |
 | runebase_contractCall         | Call (read) a smart contract method              |
 | runebase_contractSend         | Send a transaction to a smart contract           |
 | runebase_switchNetwork        | Switch between mainnet and testnet               |
@@ -127,13 +128,16 @@ To get this snap listed on the official MetaMask Snaps Directory:
 4. Review — Consensys reviews the submission and audit report.
 5. Listing — Once approved, the snap appears on snaps.metamask.io.
 
+Note: An audit is only required for directory listing. The snap can be installed
+directly via npm without an audit — see the README section on installation options.
+
 ---
 
 ## Roadmap
 
 - [ ] Phase 1 — Core snap scaffold (key derivation, address display)
 - [ ] Phase 2 — RUNES send/receive + balance
-- [ ] Phase 3 — QRC20 token support
+- [ ] Phase 3 — RRC20 token support
 - [ ] Phase 4 — Smart contract interaction
 - [ ] Phase 5 — DApp connector library
 - [ ] Phase 6 — Snap UI (home page, transaction insights)

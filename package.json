@@ -1,0 +1,36 @@
+{
+  "name": "runebase-metamask-snap-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn workspaces foreach --all --topological-dev run build",
+    "build:clean": "yarn workspaces foreach --all run build:clean",
+    "lint": "yarn workspaces foreach --all run lint",
+    "lint:fix": "yarn workspaces foreach --all run lint:fix",
+    "test": "yarn workspaces foreach --all run test",
+    "start": "yarn workspaces foreach --all --parallel run start",
+    "apply-version": "node scripts/apply-version.js"
+  },
+  "devDependencies": {
+    "@metamask/eslint-config": "^13.0.0",
+    "@metamask/eslint-config-nodejs": "^13.0.0",
+    "@metamask/eslint-config-typescript": "^13.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^28.2.0",
+    "eslint-plugin-jsdoc": "^48.0.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "yarn@4.1.1"
+}

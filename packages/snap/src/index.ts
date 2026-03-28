@@ -7,11 +7,11 @@
  * via the Runebase Insight API.
  *
  * Exposed RPC Methods:
- *   runebase_getAddress        - Return the derived Runebase address
+ *   runebase_getAddress        - Return the derived Runebase address (starts with R)
  *   runebase_getBalance        - Return RUNES balance in satoshi
  *   runebase_sendTransaction   - Sign and broadcast a RUNES transfer
- *   runebase_getQRC20Balance   - Return QRC20 token balance
- *   runebase_sendQRC20         - Transfer QRC20 tokens
+ *   runebase_getRRC20Balance   - Return RRC20 token balance
+ *   runebase_sendRRC20         - Transfer RRC20 tokens
  *   runebase_contractCall      - Read-only smart contract call
  *   runebase_contractSend      - State-changing smart contract call
  *   runebase_switchNetwork     - Switch between mainnet / testnet
@@ -24,7 +24,7 @@ import { panel, text, heading, divider } from '@metamask/snaps-sdk';
 import { getAddress } from './runebase/address';
 import { getBalance } from './runebase/balance';
 import { sendTransaction } from './runebase/send';
-import { getQRC20Balance, sendQRC20 } from './runebase/qrc20';
+import { getRRC20Balance, sendRRC20 } from './runebase/rrc20';
 import { contractCall, contractSend } from './runebase/contract';
 import { getTransactions } from './runebase/transactions';
 import { switchNetwork, getNetwork } from './runebase/network';
@@ -54,7 +54,6 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         throw new Error('runebase_sendTransaction: missing required params (to, amount)');
       }
 
-      // Show confirmation dialog
       const confirmed = await snap.request({
         method: 'snap_dialog',
         params: {
@@ -73,24 +72,24 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         throw new Error('Transaction rejected by user');
       }
 
-      const txid = await sendTransaction({ to, amount: Number(amount), feeRate });
+      const txid = await sendTransaction({ to: to as string, amount: Number(amount), feeRate: feeRate as number | undefined });
       return { txid };
     }
 
-    case 'runebase_getQRC20Balance': {
+    case 'runebase_getRRC20Balance': {
       const { contractAddress } = req.params ?? {};
       if (!contractAddress) {
-        throw new Error('runebase_getQRC20Balance: missing contractAddress');
+        throw new Error('runebase_getRRC20Balance: missing contractAddress');
       }
       const address = await getAddress();
-      const balance = await getQRC20Balance(address, contractAddress);
+      const balance = await getRRC20Balance(address, contractAddress as string);
       return { balance };
     }
 
-    case 'runebase_sendQRC20': {
+    case 'runebase_sendRRC20': {
       const { contractAddress, to, amount } = req.params ?? {};
       if (!contractAddress || !to || amount === undefined) {
-        throw new Error('runebase_sendQRC20: missing required params');
+        throw new Error('runebase_sendRRC20: missing required params');
       }
 
       const confirmed = await snap.request({
@@ -98,7 +97,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         params: {
           type: 'confirmation',
           content: panel([
-            heading('Confirm QRC20 Transfer'),
+            heading('Confirm RRC20 Transfer'),
             text(`Token contract: ${contractAddress}`),
             text(`To: ${to}`),
             text(`Amount: ${amount}`),
@@ -110,7 +109,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         throw new Error('Transaction rejected by user');
       }
 
-      const txid = await sendQRC20({ contractAddress, to, amount });
+      const txid = await sendRRC20({
+        contractAddress: contractAddress as string,
+        to: to as string,
+        amount: String(amount),
+      });
       return { txid };
     }
 
@@ -119,7 +122,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
       if (!contractAddress || !encodedData) {
         throw new Error('runebase_contractCall: missing required params');
       }
-      const result = await contractCall(contractAddress, encodedData);
+      const result = await contractCall(contractAddress as string, encodedData as string);
       return result;
     }
 
@@ -145,7 +148,11 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         throw new Error('Transaction rejected by user');
       }
 
-      const txid = await contractSend({ contractAddress, encodedData, amount });
+      const txid = await contractSend({
+        contractAddress: contractAddress as string,
+        encodedData: encodedData as string,
+        amount: amount as number | undefined,
+      });
       return { txid };
     }
 
@@ -161,7 +168,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
     case 'runebase_getTransactions': {
       const address = await getAddress();
       const { pageNum } = req.params ?? {};
-      const transactions = await getTransactions(address, pageNum);
+      const transactions = await getTransactions(address, pageNum as number | undefined);
       return { transactions };
     }
 

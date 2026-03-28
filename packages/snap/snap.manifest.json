@@ -1,0 +1,35 @@
+{
+  "version": "0.1.0",
+  "description": "MetaMask Snap for the Runebase blockchain — send RUNES, manage QRC20 tokens and interact with smart contracts natively from MetaMask.",
+  "proposedName": "Runebase Snap",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Runebase/runebase-metamask-snap.git"
+  },
+  "source": {
+    "shasum": "PLACEHOLDER_BUILD_SHASUM",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "@runebase/snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_getBip44Entropy": [
+      {
+        "coinType": 2301
+      }
+    ],
+    "snap_dialog": {},
+    "snap_manageState": {},
+    "endowment:network-access": {},
+    "endowment:rpc": {
+      "dapps": true,
+      "snaps": false
+    }
+  },
+  "manifestVersion": "0.1"
+}

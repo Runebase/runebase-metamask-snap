@@ -48,7 +48,7 @@ export interface InsightTransaction {
   txid: string;
   version: number;
   locktime: number;
-  isqrc20Transfer: boolean;
+  isrrc20Transfer: boolean;
   vin: InsightTxInput[];
   vout: InsightTxOutput[];
   blockhash?: string;
@@ -114,7 +114,8 @@ export interface ContractSendOptions {
   gasPrice?: number;
 }
 
-export interface QRC20SendOptions {
+/** RRC20 is the Runebase token standard (equivalent of ERC20 on Ethereum) */
+export interface RRC20SendOptions {
   contractAddress: string;
   to: string;
   amount: string;

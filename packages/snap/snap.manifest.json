@@ -1,6 +1,6 @@
 {
   "version": "0.1.0",
-  "description": "MetaMask Snap for the Runebase blockchain — send RUNES, manage QRC20 tokens and interact with smart contracts natively from MetaMask.",
+  "description": "MetaMask Snap for the Runebase blockchain — send RUNES, manage RRC20 tokens and interact with smart contracts natively from MetaMask.",
   "proposedName": "Runebase Snap",
   "repository": {
     "type": "git",

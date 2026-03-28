@@ -3,11 +3,14 @@
  *
  * Chain parameters sourced from:
  *   - https://github.com/Runebase/runebase/blob/master/src/chainparams.cpp
- *   - https://github.com/runebase/runebasejs-wallet (network definitions)
  *
  * Address format: P2PKH Base58Check
- *   Mainnet version byte: 58  (addresses start with 'R' or 'Q' depending on entropy)
+ *   Mainnet version byte: 58  (addresses start with 'R')
  *   Testnet version byte: 120 (addresses start with 'q')
+ *
+ * Block time: ~32 seconds (PoS — optimised in Runebase core vs upstream Qtum's ~128s)
+ *
+ * Token standard: RRC20 (Runebase equivalent of ERC20)
  *
  * BIP44 coin type: 2301 (RUNES)
  *   See: https://github.com/satoshilabs/slips/blob/master/slip-0044.md
@@ -23,7 +26,7 @@ export const NETWORKS: Record<NetworkName, RunebaseNetwork> = {
     coinType: 2301,
     pubKeyHash: 58,    // Base58Check version byte — P2PKH addresses start with 'R'
     scriptHash: 50,    // P2SH addresses
-    wif: 128,          // WIF private key prefix (same as Bitcoin mainnet)
+    wif: 128,          // WIF private key prefix
     chainId: 1129,     // Runebase EVM chain ID
     insightUrl: 'https://explorer.runebase.org',
   },
@@ -32,7 +35,7 @@ export const NETWORKS: Record<NetworkName, RunebaseNetwork> = {
     coinType: 2301,
     pubKeyHash: 120,   // Base58Check version byte — P2PKH addresses start with 'q'
     scriptHash: 110,
-    wif: 239,          // WIF private key prefix (same as Bitcoin testnet)
+    wif: 239,          // WIF private key prefix (testnet)
     chainId: 8888,
     insightUrl: 'https://testnet.runebase.org',
   },
